@@ -1,6 +1,7 @@
 use rocket::http::{Header, Status, ContentType};
 use rocket::{Request, Response};
 use rocket::fairing::{Fairing, Info, Kind};
+use sqlx::{postgres::PgPoolOptions, Column, Row};
 #[macro_use] extern crate rocket;
 
 
@@ -25,6 +26,7 @@ impl Fairing for CORS {
 
 #[get("/world")]
 fn world() ->  (Status, (ContentType, &'static str)) {
+    
     (Status::Ok, (ContentType::JSON, "{ \"hi\": \"world\" }"))
 }
 
