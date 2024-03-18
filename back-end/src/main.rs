@@ -1,11 +1,26 @@
+use std::result;
+
 use rocket::http::{Header, Status, ContentType};
-use rocket::{Request, Response};
+use rocket::{serde, Request, Response, State};
 use rocket::fairing::{Fairing, Info, Kind};
+use rocket::serde::{Serialize, json::Json};
+use serde_json;
 use sqlx::{postgres::PgPoolOptions, Column, Row};
+
+pub mod db; 
+
+use db::generated_procedures::{get_person_family, get_person_wishlist_items};
+use db::generated_types::{get_person_familyData, get_person_wishlist_itemsData};
+
 #[macro_use] extern crate rocket;
 
 
 pub struct CORS;
+
+struct Config 
+{
+    pool: sqlx::Pool<sqlx::Postgres>        
+}
 
 #[rocket::async_trait]
 impl Fairing for CORS {
@@ -24,13 +39,29 @@ impl Fairing for CORS {
     }
 }
 
-#[get("/world")]
-fn world() ->  (Status, (ContentType, &'static str)) {
-    
-    (Status::Ok, (ContentType::JSON, "{ \"hi\": \"world\" }"))
+#[get("/")]
+fn index(state: &State<Config>) -> String {
+    format!("The config value is: {}", state.pool.is_closed());
+    "hello".to_string()
+}
+
+
+#[get("/family")]
+async fn get_family(state: &State<Config>) ->  (Status, Json<Vec<get_person_familyData>>) {
+    let result: Vec<get_person_familyData> = get_person_family(&state.pool, 1).await.unwrap();
+    (Status::Ok, Json(result))
 }
 
 #[launch]
-fn rocket() -> _ {
-    rocket::build().attach(CORS).mount("/hello", routes![world])
+async fn rocket() -> _ {
+    let config = Config {
+        pool:PgPoolOptions::new()
+        .max_connections(5)
+        .connect("postgresql://brrennan:LifeEnder@localhost:5432/brrennan").await.unwrap()
+    };
+
+    rocket::build()
+        .mount("/", routes![index,  get_family ])
+        .attach(CORS)
+        .manage(config)
 }

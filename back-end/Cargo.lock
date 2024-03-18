@@ -333,6 +333,7 @@ version = "0.1.0"
 dependencies = [
  "async-std",
  "rocket",
+ "serde_json",
  "sqlx",
 ]
 
@@ -1785,6 +1786,7 @@ dependencies = [
  "rocket_codegen",
  "rocket_http",
  "serde",
+ "serde_json",
  "state",
  "tempfile",
  "time",

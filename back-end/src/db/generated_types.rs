@@ -1,4 +1,6 @@
 
+use rocket::serde::{Serialize, json::Json};
+
 pub struct familyData {
   pub id: i32,
   pub name: String,
@@ -32,12 +34,18 @@ pub struct wishlistitemData {
   pub purchased: bool,
 
 }
+
+#[derive(Serialize)]
+#[serde(crate = "rocket::serde")]
 pub struct get_person_familyData {
   pub person_id: i32,
   pub first_name: String,
   pub last_name: String,
 
 }
+
+#[derive(Serialize)]
+#[serde(crate = "rocket::serde")]
 pub struct get_person_wishlist_itemsData {
   pub wishlist_id: i32,
   pub name: String,
