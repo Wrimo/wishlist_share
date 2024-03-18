@@ -27,11 +27,22 @@ pub struct wishlistitemData {
   pub id: i32,
   pub wishlist_id: i32,
   pub name: String,
+  pub link: String,
   pub description: String,
+  pub purchased: bool,
+
+}
+pub struct get_person_familyData {
+  pub person_id: i32,
+  pub first_name: String,
+  pub last_name: String,
 
 }
 pub struct get_person_wishlist_itemsData {
+  pub wishlist_id: i32,
   pub name: String,
   pub description: String,
+  pub link: String,
+  pub purchased: bool,
 
 }
