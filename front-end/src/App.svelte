@@ -1,5 +1,5 @@
 <script>
-  import FamilyView from "./lib/FamilyView.svelte"; 
+  import FamilyView from "./lib/FamilyView.svelte";
 </script>
 
-<FamilyView person_id={1}/>
+<FamilyView person_id={2} />

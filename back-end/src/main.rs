@@ -1,4 +1,4 @@
-use std::result;
+use std::{result, vec};
 
 use rocket::fairing::{Fairing, Info, Kind};
 use rocket::http::{ContentType, Header, Status};
@@ -10,7 +10,7 @@ use sqlx::{postgres::PgPoolOptions, Column, Row};
 pub mod db;
 
 use db::generated_procedures::{get_person_family, get_person_wishlist_items};
-use db::generated_types::{get_person_familyData, get_person_wishlist_itemsData};
+use db::generated_types::{get_person_familyData, get_person_wishlist_itemsData, wishlistitemData};
 
 #[macro_use]
 extern crate rocket;
@@ -52,9 +52,35 @@ async fn get_family(
     state: &State<Config>,
     person_id: i32,
 ) -> (Status, Json<Vec<get_person_familyData>>) {
-    let result: Vec<get_person_familyData> =
-        get_person_family(&state.pool, person_id).await.unwrap();
-    (Status::Ok, Json(result))
+    let result = get_person_family(&state.pool, person_id).await;
+
+    match result {
+        Ok(r) => return (Status::Ok, Json(r)),
+        Err(_e) => {
+            return (
+                Status::InternalServerError,
+                Json(Vec::<get_person_familyData>::new()),
+            )
+        }
+    };
+}
+
+#[get("/wishlist/<person_id>")]
+async fn get_wishlist(
+    state: &State<Config>,
+    person_id: i32,
+) -> (Status, Json<Vec<get_person_wishlist_itemsData>>) {
+    let result = get_person_wishlist_items(&state.pool, person_id).await;
+
+    match result {
+        Ok(r) => return (Status::Ok, Json(r)),
+        Err(_e) => {
+            return (
+                Status::InternalServerError,
+                Json(Vec::<get_person_wishlist_itemsData>::new()),
+            )
+        }
+    };
 }
 
 #[launch]
@@ -68,7 +94,7 @@ async fn rocket() -> _ {
     };
 
     rocket::build()
-        .mount("/", routes![index, get_family])
+        .mount("/", routes![index, get_family, get_wishlist])
         .attach(CORS)
         .manage(config)
 }
