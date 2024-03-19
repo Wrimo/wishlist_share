@@ -1,9 +1,7 @@
 <script>
-    import { onMount } from "svelte";
-    import TailwindCss from "../../lib/TailwindCSS.svelte";
-    onMount(async () => {});
+    import WishlistView from "../../lib/WishlistView.svelte";
+
 </script>
 
-<TailwindCss />
 
-<h1>Hello!</h1>
+<WishlistView/>

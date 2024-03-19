@@ -1,5 +1,4 @@
 <script>
-    import TailwindCss from "./TailwindCSS.svelte";
     import { onMount } from "svelte";
     
     let data = [];
@@ -7,3 +6,5 @@
         
     });
 </script>
+
+<h2>Wishlist!</h2>

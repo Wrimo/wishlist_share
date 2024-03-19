@@ -1,20 +1,21 @@
 {
-  "name": "tailwind",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^3.0.1",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.32",
-    "postcss-load-config": "^5.0.2",
-    "svelte": "^4.2.12",
-    "tailwindcss": "^3.3.6",
-    "vite": "^5.1.6"
-  }
+	"name": "test",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"autoprefixer": "^10.4.18",
+		"postcss": "^8.4.37",
+		"svelte": "^4.2.7",
+		"tailwindcss": "^3.4.1",
+		"vite": "^5.0.3"
+	},
+	"type": "module"
 }
