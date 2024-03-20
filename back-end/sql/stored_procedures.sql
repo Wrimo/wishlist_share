@@ -1,7 +1,7 @@
 begin; 
 
 CREATE OR REPLACE FUNCTION get_person_wishlist_items(person_id integer)
-RETURNS TABLE(wishlist_id integer, name text, description text, link text, purchased bool) AS $$
+RETURNS SETOF Wishlist AS $$
 select 
     Wishlist.id, 
     WishlistItem.name,

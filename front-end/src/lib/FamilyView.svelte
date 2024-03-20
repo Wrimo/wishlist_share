@@ -4,12 +4,10 @@
     let data = [];
 
     onMount(async () => {
-        console.log(person_id);
         const response = await fetch(
             `http://127.0.0.1:8000/family/${person_id}`,
         );
         data = await response.json();
-        console.log(data);
     });
 </script>
 
