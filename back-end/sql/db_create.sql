@@ -52,6 +52,6 @@ insert into wishlist(person_id, comment) values (1, 'Get me something good!');
 
 insert into wishlistitem values 
 (1, 1, 'Swiss Army Backpack', 'A cool backpack I could use for work', null, false),
-(2, 1, 'Bookshelves', 'For books', null, false);
+(2, 1, 'Bookshelves', 'For books', null, true);
 
 commit; 
