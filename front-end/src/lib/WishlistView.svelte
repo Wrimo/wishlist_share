@@ -3,8 +3,8 @@
     import { selectedPerson } from "./store.js";
     let data = [];
     onMount(async () => {
-        console.log($selectedPerson)
-        if (Object.keys($selectedPerson).length === 0) {
+        console.log($selectedPerson);
+        if (Object.keys($selectedPerson).length === 0) { // if the page has been refreshed, go back home
             document.location.href = "/";
         }
         const response = await fetch(
@@ -14,24 +14,22 @@
     });
 </script>
 
-<div class="bg-slate-100 rounded-xl">
-    <h1 class="p-2 text-black text-5xl">Name's Wishlist</h1>
-    <div class="container m-auto grid grid-cols-12 gap-1">
-        {#if data.length === 0}
-            <p>This person hasn't filled out their wishlist yet!</p>
-        {:else}
-            {#each data as item}
-                <div
-                    class="col-span-12 py-2 px-4 rounded-xl"
-                    class:bg-emerald-400={item["purchased"]}
-                    class:bg-slate-300={!item["purchased"]}
-                >
-                    <button class="w-96 text-left text-black">
-                        {item["name"]}
-                        <h3>{item["description"]}</h3>
-                    </button>
-                </div>
-            {/each}
-        {/if}
+<div class="h-screen w-full flex justify-center items-center">
+    <div
+        class="h-max w-max bg-slate-100 rounded-xl container m-auto grid grid-cols-4 gap-1 scale-150"
+    >
+        <h1 class="p-2 text-black text-2xl col-span-12 m-auto">
+            {$selectedPerson["first_name"]}'s Wishlist
+        </h1>
+            {#if data.length === 0}
+                <p class="p-2 text-black text-2xl col-span-12 m-auto">This person hasn't filled out their wishlist yet!</p>
+            {:else}
+                {#each data as item}
+                        <button class="col-span-12 h-max m-1 py-1 px-4 rounded-xl bg-slate-300 text-left text-black text-xl " class:bg-emerald-400={item["purchased"]} class:bg-slate-300={!item["purchased"]}>
+                            {item["name"]}
+                            <p class="text-sm">{item["description"]}</p>
+                        </button>
+                {/each}
+            {/if}
     </div>
 </div>
