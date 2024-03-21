@@ -9,8 +9,8 @@ use sqlx::{postgres::PgPoolOptions, Column, Row};
 
 pub mod db;
 
-use db::generated_procedures::{get_person_family, get_person_wishlist_items};
-use db::generated_types::{get_person_familyData, get_person_wishlist_itemsData, wishlistitemData};
+use db::generated_procedures::{get_person_family, get_person_wishlist_items, set_purchased};
+use db::generated_types::{get_person_familyData, wishlistitemData};
 
 #[macro_use]
 extern crate rocket;
@@ -69,7 +69,7 @@ async fn get_family(
 async fn get_wishlist(
     state: &State<Config>,
     person_id: i32,
-) -> (Status, Json<Vec<get_person_wishlist_itemsData>>) {
+) -> (Status, Json<Vec<wishlistitemData>>) {
     let result = get_person_wishlist_items(&state.pool, person_id).await;
 
     match result {
@@ -77,10 +77,23 @@ async fn get_wishlist(
         Err(_e) => {
             return (
                 Status::InternalServerError,
-                Json(Vec::<get_person_wishlist_itemsData>::new()),
+                Json(Vec::<wishlistitemData>::new()),
             )
         }
     };
+}
+
+#[post("/wishlist_item/<item_id>")]
+async fn update_purchased(
+    state: &State<Config>,
+    item_id: i32,
+) -> Status {
+    let result: Result<(), sqlx::Error> = set_purchased(&state.pool, item_id).await; 
+    match result { 
+        Ok(_r) => return Status::Ok, 
+        Err(_e) => return Status::InternalServerError
+
+    }
 }
 
 #[launch]
@@ -94,7 +107,7 @@ async fn rocket() -> _ {
     };
 
     rocket::build()
-        .mount("/", routes![index, get_family, get_wishlist])
+        .mount("/", routes![index, get_family, get_wishlist, update_purchased])
         .attach(CORS)
         .manage(config)
 }

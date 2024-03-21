@@ -1,9 +1,10 @@
 begin; 
 
 CREATE OR REPLACE FUNCTION get_person_wishlist_items(person_id integer)
-RETURNS SETOF Wishlist AS $$
+RETURNS SETOF WishlistItem AS $$
 select 
-    Wishlist.id, 
+    WishlistItem.id, 
+    WishlistItem.wishlist_id,
     WishlistItem.name,
     WishlistItem.description, 
     WishlistItem.link,
@@ -29,5 +30,11 @@ from
     join Person p2 on p2.id = fp2.person_id
 where p2.id != $1;
 $$ LANGUAGE SQL;
+
+CREATE OR REPLACE PROCEDURE set_purchased(item_id integer)
+LANGUAGE SQL AS $$
+update WishlistItem set purchased = not purchased 
+where id = $1;
+$$;
 
 commit; 

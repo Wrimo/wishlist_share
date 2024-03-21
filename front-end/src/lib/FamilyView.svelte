@@ -15,7 +15,7 @@
 
 <div class="h-screen w-full flex justify-center items-center">
     <div
-        class="h-96 w-72 bg-slate-100 rounded-xl container m-auto grid grid-cols-4 gap-1 scale-150"
+        class="h-max w-96 bg-slate-100 rounded-xl container m-auto grid grid-cols-4 gap-1 scale-150"
     >
         <h1 class="p-2 text-black text-5xl col-span-12 m-auto">Your Family</h1>
         {#each data as person}
